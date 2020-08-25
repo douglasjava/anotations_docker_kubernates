@@ -21,12 +21,12 @@ subir a imagem para o hub
 comando kubernates
 
 SUBINDO BANCO
-kubectl apply -f .\k8s\mongodb\service.yaml
-kubectl apply -f .\k8s\mongodb\deployment.yaml
+>kubectl apply -f .\k8s\mongodb\service.yaml
+>kubectl apply -f .\k8s\mongodb\deployment.yaml
 
 SUBINDO API
-kubectl apply -f .\k8s\api\service.yaml
-kubectl apply -f .\k8s\api\deployment.yaml
+>kubectl apply -f .\k8s\api\service.yaml
+>kubectl apply -f .\k8s\api\deployment.yaml
 
 **Explicação**
 
@@ -34,42 +34,43 @@ Fazer deploy dos elementos service/deployment aplicando-os
 -f -> apontamento para o arquivo de service
 
 COMO SEI QUE FOI REALMENTE FEITO O DEPLOY 
-kubectl get deployments
+>kubectl get deployments
 
 COMO VEJO OS PODS
-kubectl get pods
+>kubectl get pods
 
 COMO RECUPERAR MEU SERVIÇO QUE FOI STARTADO 
-kubectl get services
+>kubectl get services
 
 COMO ESCALAR UM DEPLOYMENT - UM SERVIÇO 
-kubectl scale deployment api-deployment --replicas=10
+>kubectl scale deployment api-deployment --replicas=10
 
 COMO REMOVER UM POD 
-kubectl delete pods api-deployment-749d78579f-5f4mj 
+>kubectl delete pods api-deployment-749d78579f-5f4mj 
 
 QUANTOS SERVIDORES ESTÃO SENDO EXECUTADOS
-kubectl get nodes   
+>kubectl get nodes   
 
 MAIS ESPECIFICO
-kubectl get pods -o wide
+>kubectl get pods -o wide
 
 ATUALIZAR IMAGEM DO DEPLOYMENT 
-kubectl set image deployment api-deployment api=douglasjava26/curso:v2
+>kubectl set image deployment api-deployment api=douglasjava26/curso:v2
 
 CONFIRMA QUE A IMAGEM FOI ALTERADA
-kubectl describe pod 
+>kubectl describe pod 
 
 
 VER METRICAS DE CADA POD
-kubectl top pod --> Obs:: é ncessário instalar o metricsservice  --> kubectl apply -f https://github.com/kubernetes-sigs/metrics-server/releases/download/v0.3.7/components.yaml
+Obs:: é ncessário instalar o metricsservice  --> kubectl apply -f https://github.com/kubernetes-sigs/metrics-server/releases/download/v0.3.7/components.yaml
+>kubectl top pod --> 
 
 
 VER QUANTAS VERÕES EXISTEM 
-kubectl rollout history deployment api-deployment
+>kubectl rollout history deployment api-deployment
 
 VOLTAR VERSÃO 
-kubectl rollout undo deployment api-deployment
+>kubectl rollout undo deployment api-deployment
 
 FERRAMENTA DE DASHBOARD
 Octant 
@@ -78,18 +79,18 @@ Instalção --> choco install octant --confirm  (abrir cmd como ADM)
 
 REMOVER SERVICES DO KUBERNATES
 
-kubectl get service -o wide
+>kubectl get service -o wide
 
-kubectl delete svc <YourServiceName>
+>kubectl delete svc <YourServiceName>
 
-docker run -p 8080:8080 douglasjava26/blockchain:v1
+>docker run -p 8080:8080 douglasjava26/blockchain:v1
 
 VER LOGS
-kubectl logs 'nome do pod'
+>kubectl logs 'nome do pod'
 
 
 Monitoramento
-kubectl get hpa
+>kubectl get hpa
 
 CONFIGURAÇÂO RESOURCES -> deployment
 Configuração realizada para execução do container, requisitar um padrão minimo e um limite para cira outra replica
@@ -119,32 +120,41 @@ a um aviso para o servidor quando uma replica estiver sendo deletado, para ela r
 -d quantidade de disco
 
 > multipass shell k8s
-- acessar internamente a VM
+# acessar internamente a VM
 
 > multipass exec k8s -- comando linux
--- comando de fora da VM
+#comando de fora da VM
 
 > multipass mount C:Users\Marques k8s:/externo
--- montar diretório da máquina física dentro da VM
+#montar diretório da máquina física dentro da VM
 
 > multipass umount k8s
--- remover mapeamento
+#remover mapeamento
 
 > multipass info k8s
--- recuperar informções sobre as VM
+#recuperar informções sobre as VM
 
 > multipass delete k8s
--- remover pacialmente
+#remover pacialmente
 
 > multipass recover k8s
--- recuperar VM de delete pacialmente
+#recuperar VM de delete pacialmente
 
 > multipass delete k8s
 > multipass purge
--- delete completo
+#delete completo
+
+> Instalação microk8s
+>multipass exec 'name vm criada' -- sudo snap install microk8s --classic --channel=1.8/stable
+>multipass exec k8s -- sudo usermod -a -G microk8s ubuntu
+>multipass exec k8s -- sudo chown -f -R ubuntu ~/.kube
+>multipass restart k8s
 
 
----> POSSIVEL ERRO NO WINDOWS 
+----------------------------------------------
+POSSIVEL ERRO NO WINDOWS 
+----------------------------------------------
+
 Falha ao criar VM - timed out 
 
 *ERRO*
