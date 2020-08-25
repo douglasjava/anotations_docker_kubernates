@@ -4,11 +4,11 @@
 ANOTAÇÕES ESTUDOS KUBERNATES/DOCKER
 ------------------------------------------
 
-comandos docker
+##comandos docker
 
 docker build -t douglasjava26/curso:v1 -f .\src\Dockerfile .\src\
 	
-**Explicação**
+###Explicação
 
 Criar a imagem
 - t -> criação de tag, o nome antes da '/' é o repositório no Docker HUB 
@@ -18,17 +18,17 @@ Criar a imagem
 docker push douglasjava26/curso:v1
 subir a imagem para o hub
 
-comando kubernates
+##comando kubernates
 
-SUBINDO BANCO
+**SUBINDO BANCO**
 >kubectl apply -f .\k8s\mongodb\service.yaml
 >kubectl apply -f .\k8s\mongodb\deployment.yaml
 
-SUBINDO API
+**SUBINDO API**
 >kubectl apply -f .\k8s\api\service.yaml
 >kubectl apply -f .\k8s\api\deployment.yaml
 
-**Explicação**
+###Explicação
 
 Fazer deploy dos elementos service/deployment aplicando-os
 -f -> apontamento para o arquivo de service
