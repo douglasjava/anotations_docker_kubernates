@@ -16,6 +16,9 @@ f -> apontamento para o arquivo do Dockerfile
 3. Subir imagem Docker
 >  docker run -p 8080:8080 douglasjava26/blockchain:v1  
 
+4. Visualizar imagens docker rodando
+>  docker container ls
+
 ## Comando kubernates  
   
 1. SUBINDO BANCO
@@ -77,6 +80,15 @@ Obs:: é ncessário instalar o metricsservice  --> kubectl apply -f https://gith
 17. Monitoramento  
 >    kubectl get hpa  
 
+18. Criar deployment
+>    kubectl create deployment nginx --image=nginx
+
+19. Export porta do container
+>    kubectl port-forward pod/nginx-f89759699-crpmc 8080:80
+
+20. Detalhes
+>    kubectl get all --all-namespaces -o wide
+
 #### FERRAMENTA DE DASHBOARD  
 - Octant   
 
@@ -132,12 +144,64 @@ d quantidade de disco
 >     multipass purge  
   
   
-## Instalação microk8s  
->     multipass exec 'name vm criada' -- sudo snap install microk8s --classic --channel=1.8/stable  
+## Instalação da VM com microk8s  
+>     multipass exec 'name vm criada' -- sudo snap install microk8s --classic --channel=1.18/stable  
 >     multipass exec k8s -- sudo usermod -a -G microk8s ubuntu  
 >     multipass exec k8s -- sudo chown -f -R ubuntu ~/.kube  
 >     multipass restart k8s  
+
+10.  Configurando Kubernate dentro da VM
+>     multipass exec k8s -- /snap/bin/microk8s.kubectl create deployment nginx --image=nginx
+>     multipass exec k8s -- /snap/bin/microk8s.kubectl get pods
   
+11.  Visualizar configurações - Vai imprimir as configuração do kubectl
+>     multipass exec k8s -- /snap/bin/microk8s.kubectl config view --raw
+
+12.  Criando mais de um nó com multipass - criar uma nova VM - com o mesmo comando da linha [107] alterando o nome
+fazendo toda a configuração aprensetada a partir da linha [135]
+
+13.  Adicionar um nodes - Gerará um comando para criar um join
+>     multipass shell 'nome da vm'  
+>     microk8s add-node --> Copiar o comando gerado
+>     exit
+>     multipass shell 'nome da vm'  -> Entra na outra VM
+>     colar o comando
+>     microk8s remove-node 'nome vm'
+>     microk8s leave
+>     kubectl get nodes
+
+
+
+## Comando kind
+
+1.  Criar cluster com um nó
+>     kind create cluster     
+
+2.  Criar cluster nomeado
+>     kinf create cluster --name meucluster
+
+3.  Saber quantos cluster tem na máquina
+>     kind get clusters
+
+4.  Deletar cluster
+>     kind delete cluster --name kind
+
+5.  Criar cluster customizado
+É possivel criar arquivos e configuração para criar cluster mais robustos.
+> kind create cluster --config .\cluster-one-controll-plane.yaml --name multinodes
+
+>
+	kind: Cluster
+	apiVersion: kind.x-k8s.io/v1alpha4
+	nodes:
+	- role: control-plane
+	- role: worker
+	- role: worker
+>	
+
+
+## Instalação Azure CLI AKS
+
   
 
 #### POSSÍVEL ERRO NO WINDOWS
