@@ -200,8 +200,42 @@ fazendo toda a configuração aprensetada a partir da linha [135]
 >	
 
 
-## Instalação Azure CLI AKS
+## Azure CLI AKS
+Acessar site abaixo [Versão atual da CLI do Azure]
+-- https://docs.microsoft.com/pt-br/cli/azure/install-azure-cli-windows?view=azure-cli-latest&tabs=azure-cli
 
+Teste de instalação 
+>  az version
+
+O comando abaixo irá abrir uma página no navegador para a realização do login [Necessário pagar/colocar o cartão] 
+>  az login 
+
+
+1. Criar um cluster kubernatee
+- Portal Azure -> https://portal.azure.com
+- Menu: All services -> Container -> Kubernates Services -> Adicionar (OBS: Região Brasil constuma-se ser mais caro.)
+- Next e configurações (Dúvidas acessar o curso)
+
+2. Acessar cluster criado localmente com [kubectl]
+-  kubedev -> nome criado no passo anterior 
+-  overwrite-existing -> vai sobreescrever uma possivel configuração antiga localmente
+>  az aks get-credentials --resource-group kubedev --name kubedev --overwrite-existing
+>  kubectl get nodes
+
+
+## Scaleway - [Não utilizar em Produção]
+1. Criar Cluster
+- Portal -> https://www.scaleway.com/en/
+- Kubernetes Kapsule 
+- Configurações
+- Realizar downaload kubeconfig 
+- Renomear para config
+- Copiar e colar [C:\Users\Marques\.kube] pasta do usuário diretório .kube   
+>  kubectl get nodes
+>  kubectl create deployment nginx --image=nginx
+
+
+## Kubeadm
   
 
 #### POSSÍVEL ERRO NO WINDOWS
