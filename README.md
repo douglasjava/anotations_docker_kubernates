@@ -19,6 +19,35 @@ f -> apontamento para o arquivo do Dockerfile
 4. Visualizar imagens docker rodando
 >  docker container ls
 
+5. Visualizar container que já foram encerrados
+>  docker container ls -a
+
+6. Remover containers
+>  docker container rm [container id]
+
+7. Iniciar container interativo
+>  docker container run -it ubuntu /bin/bash
+
+8. Comando para executar imagem que fica rodando no mesmo cursor
+>  docker container run -d nginx
+
+9. Comando para entrar em modo interativo em container já startado
+>  docker exec -it [container id] /bin/bash
+
+10. Comando para fazer build da porta interna para uma porta externa
+- [-d] -> utilizado para entrar em modulo daemon para não segurar o cursor
+- [p] -> Definir uma porta externa primeira porta porta externa usada localmente segunda porta interna no container
+>   docker container run -d -p 8080:80 nginx
+
+11. Comando para remover container forçado
+>   docker container rm -f 6774019d642f 
+
+12. Comando para parar container 
+>   docker container stop 6774019d642f 
+
+
+apt-get install --yes curl
+
 ## Comando kubernates  
   
 1. SUBINDO BANCO
@@ -236,6 +265,8 @@ O comando abaixo irá abrir uma página no navegador para a realização do logi
 
 
 ## Kubeadm
+1. Documentação: ​https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/create-cluster-kubeadm/
+
   
 
 #### POSSÍVEL ERRO NO WINDOWS
