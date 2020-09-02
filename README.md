@@ -45,8 +45,67 @@ f -> apontamento para o arquivo do Dockerfile
 12. Comando para parar container 
 >   docker container stop 6774019d642f 
 
+13. Comando para baixar uma imagem, só download não executa
+>   docker pull ubuntu
 
-apt-get install --yes curl
+14. Comando para remover imagem, para isso o container tem que ser parado, não pode está rondando
+>   docker container rm [id_container]
+>   docker image rm [name ou id image]
+
+15. Comando utilizando commit --> [Não recomendado, não pode ser vercioando.]
+- O docker commit serve para gerar uma imagem a partir de outro container, por isso não foi necessário instalar o curl novamente pois o mesmo já 
+havia sido instalado no container a qual foi criado.
+>   docker commit [id_container] kubedevio/ubuntu-curl:commit
+
+16. Criar Imagem docker com DockerFile
+>   Item 1
+>   docker build -t kubedevio/ubuntu-curl:build . 
+- Por default ele já vai procurar o arquivo [DockerFile] tirando a necessidade de menciona-lo na criação
+
+17. Comando para ver historico da imagem.
+>   docker image history kubedevio/ubuntu-curl:commit
+
+18. Comando para limpar imagens não utilizadas
+>   docker image prune
+
+19. Comando para executar operação dentro do container sem entra no mesmo
+>   docker container run -it kubedevio/ubuntu-curl:build curl https://www.google.com
+
+20. Comando para criar uma nova tag
+>   docker tag kubedevio/api-conversao:v1 kubedevio/api-conversao:latest
+
+### Principais comandos Dockerfile
+> FROM        -> Inicializa o build de uma imagem a partir de uma image base.
+> RUN         -> Executa um comando
+> LABEL       -> Adiciona metadados a imagem
+> CMD         -> Define o comando e ou os parâmetros para executação do container
+> EXPOSE      -> Define que o container precisa export a porta em questão
+> ENV         -> Define variaveis de ambiente
+> ADD         -> Copia arquivos ou diretório ou arquivos remotos e adiciona ao sistema de arquivos da imagem [diferencial, pode trablhar com zipados]
+> COPY        -> Copia arquivos ou diretórios e adiciona ao sistema de arquivos da imagem
+> ENTRYPOINT  -> Informa qual comando será executado quando um container for iniciado utilizando esta imagem, diferentemente do CMD, o ENTRYPOINT não é sobrescrito, isso quer dizer que este comando será sempre executado
+> VOLUME      -> Mapeia um diretório do host para ser acessível pelo container
+> WORKDIR     -> Define qual será o diretório de trabalho (lugar onde serão copiados os arquivos, e criadas novas pastas)
+> ONBUILD     -> Define algumas instruções que podem ser realizadas quando alguma determinada ação for executada, é basicamente como uma trigger.
+
+### Imagem x Container
+- Imagem -> um processo que será executado, um pacote
+- Container -> É um projeto criado, um processo
+- Identificando Imagem Docker -> EX: kubedevio/api-conversao:v1
+ - kubedevio -> namespace
+ - api-conversao -> Repositório
+ - v1 -> tag
+ 
+[Obs: Quando a imagem não tem o namespace, isso significa que é uma imagem oficial do Docker.]
+
+### Diferenças entre [DockerFile x Commit]
+o primeiro trabalhar por camandas a cada linha de comando escrita no [dockerFile] e armazena em um cache, o que possibilita um ganho no futuro.
+e em caso de mudança apenas o que foi incluido novo que será instalado
+O que não ocorre quando utilizamos o [commit]
+
+#### Forma de criar imagens Docker
+- docker commit -> *Não recomendado* item 15
+- dockerfiles -> item 16
 
 ## Comando kubernates  
   

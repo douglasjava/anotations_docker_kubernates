@@ -1,0 +1,21 @@
+## Escolher qual imagem será utilizada
+FROM node
+
+## Escolher diretório onde será criado os arquivos, cuidados com diretórios do LINUX
+## O diretório será criado e os comandos serão executados dentro dele
+WORKDIR /app 
+
+## Pega um ou mais arquivos da máquina local e copia para dentro do container, na pasta informada acima.
+COPY package*.json ./
+
+## Comando para baixar as dependencias do node
+RUN npm install
+
+## Copiar tudo e cola dentro na pasta informada acima
+COPY . .
+
+## Documentar a porta que será executado
+EXPOSE 8080
+
+## Será executado apenas quando executar o Container
+CMD [ "node", "index.js" ]  
