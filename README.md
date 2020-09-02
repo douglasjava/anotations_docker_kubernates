@@ -75,18 +75,18 @@ havia sido instalado no container a qual foi criado.
 >   docker tag kubedevio/api-conversao:v1 kubedevio/api-conversao:latest
 
 ### Principais comandos Dockerfile
-> FROM        -> Inicializa o build de uma imagem a partir de uma image base.
-> RUN         -> Executa um comando
-> LABEL       -> Adiciona metadados a imagem
-> CMD         -> Define o comando e ou os parâmetros para executação do container
-> EXPOSE      -> Define que o container precisa export a porta em questão
-> ENV         -> Define variaveis de ambiente
-> ADD         -> Copia arquivos ou diretório ou arquivos remotos e adiciona ao sistema de arquivos da imagem [diferencial, pode trablhar com zipados]
-> COPY        -> Copia arquivos ou diretórios e adiciona ao sistema de arquivos da imagem
-> ENTRYPOINT  -> Informa qual comando será executado quando um container for iniciado utilizando esta imagem, diferentemente do CMD, o ENTRYPOINT não é sobrescrito, isso quer dizer que este comando será sempre executado
-> VOLUME      -> Mapeia um diretório do host para ser acessível pelo container
-> WORKDIR     -> Define qual será o diretório de trabalho (lugar onde serão copiados os arquivos, e criadas novas pastas)
-> ONBUILD     -> Define algumas instruções que podem ser realizadas quando alguma determinada ação for executada, é basicamente como uma trigger.
+- FROM        -> Inicializa o build de uma imagem a partir de uma image base.
+- RUN         -> Executa um comando
+- LABEL       -> Adiciona metadados a imagem
+- CMD         -> Define o comando e ou os parâmetros para executação do container
+- EXPOSE      -> Define que o container precisa export a porta em questão
+- ENV         -> Define variaveis de ambiente
+- ADD         -> Copia arquivos ou diretório ou arquivos remotos e adiciona ao sistema de arquivos da imagem [diferencial, pode trablhar com zipados]
+- COPY        -> Copia arquivos ou diretórios e adiciona ao sistema de arquivos da imagem
+- ENTRYPOINT  -> Informa qual comando será executado quando um container for iniciado utilizando esta imagem, diferentemente do CMD, o ENTRYPOINT não é sobrescrito, isso quer dizer que este comando será sempre executado
+- VOLUME      -> Mapeia um diretório do host para ser acessível pelo container
+- WORKDIR     -> Define qual será o diretório de trabalho (lugar onde serão copiados os arquivos, e criadas novas pastas)
+- ONBUILD     -> Define algumas instruções que podem ser realizadas quando alguma determinada ação for executada, é basicamente como uma trigger.
 
 ### Imagem x Container
 - Imagem -> um processo que será executado, um pacote
