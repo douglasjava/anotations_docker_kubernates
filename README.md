@@ -72,7 +72,42 @@ havia sido instalado no container a qual foi criado.
 >   docker container run -it kubedevio/ubuntu-curl:build curl https://www.google.com
 
 20. Comando para criar uma nova tag
+- Serve também para criar uma nova imagem alterando o nome/repositorio a partir de outra imagem
 >   docker tag kubedevio/api-conversao:v1 kubedevio/api-conversao:latest
+
+21. Comando para remover todos os container - O Docker fornece um único comando que irá limpar quaisquer recursos — imagens, contêineres, volumes, e redes — que estão pendentes (não associados a um contêiner):
+>   docker system prune 
+
+22. Comando para remover todas as imagens
+>   docker rmi $(docker images -a -q)
+
+### Boas práticas Imagem Docker
+- Imagem oficias
+- Utilize sempre as tag de versão
+- Utilize layers a seu favor
+- Utilize .dockerignore
+
+### Multistagebuild
+- Utilizado para otimizar a imagem, separando as imagens em processo de build e de execução
+- Ex com aplicação [GO]
+-
+*Primeira Imagem faz o processo de build*
+> 	FROM golang:1.7.3 as build
+	WORKDIR /build
+	COPY main.go .
+	RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o main .
+	CMD ["./main"]
+
+*Segunda Imagem faz o processo de execução apontado para a imagem com o build*
+>	FROM alpine:latest
+	WORKDIR /app
+	COPY --from=build /build/main .
+	CMD [ "./main" ]
+	
+- Otimização da imagem sem e com multistage
+- Sem -> imagem com 674MB
+- Com -> imagem com 7.21MB	
+
 
 ### Principais comandos Dockerfile
 - FROM        -> Inicializa o build de uma imagem a partir de uma image base.
@@ -106,6 +141,16 @@ O que não ocorre quando utilizamos o [commit]
 #### Forma de criar imagens Docker
 - docker commit -> *Não recomendado* item 15
 - dockerfiles -> item 16
+
+## Azure Container Registry
+- Semelhante ao Docker hub
+- portal Azure - Create container registry - configurações - [PAGO]
+- Habilitar Acces key para utilizar o client docker cli
+- Autenticar
+ - docker login url (Passada na tela de acces key)
+ - username e password
+- push para subir a imagem da mesma forma como foi no docker hub
+
 
 ## Comando kubernates  
   
