@@ -226,6 +226,54 @@ Obs:: é ncessário instalar o metricsservice  --> kubectl apply -f https://gith
 - Octant   
 
 >     Instalação --> choco install octant --confirm  (abrir cmd como ADM)  
+
+### Pods (Pasta exercicios/modulo-11)
+1. Para descobrir qual versão do apiVersion, verifica a linha de baixo no retorno do comando, como não informar será utilizado a V1
+- Observar o tipo do objeto que está utilizando e esxecutar o comando abaixo para recuperar a versão coluna APIGROUP 
+- Ex: Pod -> não tem nada nessa coluna, portanto a versão será v1
+- Ex: replicasets -> esse já tem uma informação nessa coluna portanto a versão ficar dessa forma apps/v1
+>    kubectl api-resources
+
+2. Criar o cluster no kubernates
+>  kubectl apply -f arquivo.yaml
+
+3. Sabe mais detalhes de um objeto
+>  kubectl describe pod [nomepod]
+
+4. Bind da porta local com a porta do pod (Semelhante ao processo do docker)
+>  kubectl port-forward pod/meuprimeiropod 8080:80    
+
+### NUNCA USE O PODE SOZINHO, O MESMO NÃO TEM RESILÊNCIA/ESCALABILIDADE SE POR VENTURA CAIR OU SER DELETADO ERRONÊAMENTE ELE NÃO CRIARÁ UM NOVO AUTOMATICAMENTE.
+
+#### Label -> Elemento chave/valor juntos com o metadados organização do projeto, utilizado para seleção 
+- É possível seleciona-los por itens descrito na labels
+>  kubectl get pods -l versao=verde
+- É possével realizar deletes passando as labels com filtros
+>  kubectl delete pod -l versao=azul
+
+### ReplicaSets - Antigo -> Replication Controller
+- Garante as replicas
+- RESILÊNCIA
+- Não é possivel atualizar os pods utilizando o replicaSet
+- Não gerencia as versões
+
+### Deployment
+- Um objeto 
+- Gerenciar os replicaSets
+- Processo de entrega
+
+
+#### Visão GERAL
+POD -> REPLICASET -> DEPLOYMENT
+Seguindo essa ordem de gerenciamento
+- O deploymenet guarda os replicaset para gerenciar as versões a cada versão nova startada ele vai criar um novo replicaset
+*Pod trabalha sozinho
+*ReplicaSets gerencia os pods --> e nesse processo ele automaticament cria os Pod
+*Deployment gerencia os replicaSet --> da mesma for nesse processo ele cria as replicaset
+
+> kubectl get pods
+> kubectl get replicaset
+> kubectl get deployment
   
 #### CONFIGURAÇÂO RESOURCES -> deployment  
 Configuração realizada para execução do container, requisitar um padrão minimo e um limite para cira outra replica  
