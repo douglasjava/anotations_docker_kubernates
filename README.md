@@ -248,7 +248,7 @@ Obs:: é ncessário instalar o metricsservice  --> kubectl apply -f https://gith
 #### Label -> Elemento chave/valor juntos com o metadados organização do projeto, utilizado para seleção 
 - É possível seleciona-los por itens descrito na labels
 >  kubectl get pods -l versao=verde
-- É possével realizar deletes passando as labels com filtros
+- É possível realizar deletes passando as labels com filtros
 >  kubectl delete pod -l versao=azul
 
 ### ReplicaSets - Antigo -> Replication Controller
@@ -274,6 +274,18 @@ Seguindo essa ordem de gerenciamento
 > kubectl get pods
 > kubectl get replicaset
 > kubectl get deployment
+
+Obs: Para deletar o deployment
+> kubectl delete deployment [name]
+
+- Ver as versões criadas
+> kubectl rollout history deployment meuprimeirodeployment
+
+- Voltar uma versão
+> kubectl rollout undo deployment meuprimeirodeployment
+
+- Atualizar imagem via comando, observe que a tag *meucontainer* é a mesma informada no arquivo yaml (exercicio/modulo-11)
+> kubectl set image deployment meuprimeirodeployment meucontainer=kubedevio/nginx-color:green
   
 #### CONFIGURAÇÂO RESOURCES -> deployment  
 Configuração realizada para execução do container, requisitar um padrão minimo e um limite para cira outra replica  
@@ -288,6 +300,62 @@ Configuração realizada para execução do container, requisitar um padrão min
 > processo   a um aviso para o servidor quando uma replica estiver sendo
 > deletado, para ela retirar da fila de loadbalance
 
+
+### SERVICE
+#### Cluster IP
+- Gerar conexão dentro do cluster kubernates
+- Por padrão o TYPE do service é ClusterIP não sendo necessário colocar a informação
+- Utilizando esse tipo ele já faz o balanceamento automatico, alterando os pods, e ao invés ultizar o IP do pod utilizamos o name do service, 
+ficando assim mais dinamico
+
+- Comando 
+> kubectl run -i --tty --image douglasjava26/ubuntu-machine ping-test --restart=Never --rm -- /bin/bash
+
+
+#### NodePort
+- Acesso externo
+- Ranche de ports -> 30.000 até 32.767
+- Ao criar um service desse tipo ele vai externalizar os pods fazendo o bind da porta internar para uma porta externa utilizando esse ranche
+- Quando for usar internamente ainda utiliza o name do service e a porta do service > kubectl get services -o wide
+- Quando for usar externamente  utilizar o IP do multipass ou microk8s
+
+
+#### LoadBalancer
+- Também gerar um IP externo
+- Provedor de nuvem
+- serviço cloud
+- Não funciona sem provedor de nuvem - observar tag [EXTENAL-IP pending]
+
+-- para ver todos os processos pods/replicaset/deployment/service
+> kubectl get all
+
+#### ExternalName
+- Serve como se fosse redirecionamento de páginas web, 
+na tag spec.externalName informo o link externo para acessar e no metadata.name o nome que quero utilizar para acessar esse caminho externo
+
+[OBS: sempre ficar atento ao nome passado selector o mesmo tem que ser passado nos dois arquivos deployment e service .yaml]
+
+-- service.yaml
+> spec:
+	selector:
+		app: api
+
+-- deployment.yaml	
+> spec:
+	selector:
+		matchLabels:
+			app: api
+
+
+
+
+
+
+## Endpoints
+- Coleção de todos os Pods que são vinculados com o services.
+- São criados de forma automatica
+
+> kubectl get enpoints
 
 ## Comandos MULTIPASS
 
