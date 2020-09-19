@@ -12,6 +12,7 @@ f -> apontamento para o arquivo do Dockerfile
 "douglasjava26" -> Nome Docker hub
 "curso" -> Nome do repositório  
 >     docker push douglasjava26/curso:v1
+>     docker push douglasjava26/ubuntu-machine:v2
 
 3. Subir imagem Docker
 >  docker run -p 8080:8080 douglasjava26/blockchain:v1  
@@ -26,7 +27,7 @@ f -> apontamento para o arquivo do Dockerfile
 >  docker container rm [container id]
 
 7. Iniciar container interativo
->  docker container run -it ubuntu /bin/bash
+>  docker container run -it douglasjava26/ubuntu-machine /bin/bash
 
 8. Comando para executar imagem que fica rodando no mesmo cursor
 >  docker container run -d nginx
@@ -71,6 +72,7 @@ havia sido instalado no container a qual foi criado.
 19. Comando para executar operação dentro do container sem entra no mesmo
 >   docker container run -it kubedevio/ubuntu-curl:build curl https://www.google.com
 
+
 20. Comando para criar uma nova tag
 - Serve também para criar uma nova imagem alterando o nome/repositorio a partir de outra imagem
 >   docker tag kubedevio/api-conversao:v1 kubedevio/api-conversao:latest
@@ -80,6 +82,161 @@ havia sido instalado no container a qual foi criado.
 
 22. Comando para remover todas as imagens
 >   docker rmi $(docker images -a -q)
+
+23. Bind volumes
+- $(pwd)/mysql   -> Caminho do diretório local
+- /var/lib/mysql -> Diretório dentro do container
+> -v $(pwd)/mysql:/var/lib/mysql
+
+24. Volumes
+- mysql-db -> Volume nomeado no Docker Host
+- /var/lib/mysql -> diretório dentro do container
+- ro -> Read only 
+- rw -> write
+> -v mysql-db:/var/lib/mysql:ro
+
+
+25. Volumes com mount (chave + valor)
+- mysql-db -> Volume nomeado no Docker Host [Podemos chamar atraés de source ou src]
+- /var/lib/mysql -> diretório dentro do container [Podemos chamar através de destination, dst ou tarjet]
+- readonly
+- readwrite -> padrão
+> --mount'type=volume,source=mysql-db,target=/var/lib/mysql,readonly'
+
+26. Listar Volumes
+> docker volume ls
+
+27. Remover Volumes não utilizado
+> docker volume prune
+
+28. Criar container MySql
+> docker container run -d -e MYSQL_ROOT_PASSWORD=password mysql
+
+29. Apagar container apontando apenas os três primeiros caracteres do id_container 
+> docker container rm -f 7d4
+
+30. Usar o mesmo volume evitando-se assim a perde de valores.]
+> docker volume create mysql-db
+
+31. Informações do volume 
+> docker volume inspect mysql-db
+
+32. Criar container docker mapeando o volume
+> docker container run -d --name mysql-db -v mysql-db:/var/lib/mysql -e MYSQL_ROOT_PASSWORD=password mysql
+
+33. Criar container docker mapeando o volume modo de leitura
+> docker container run -d --name mysql-db -v mysql-db:/var/lib/mysql:ro -e MYSQL_ROOT_PASSWORD=password mysql
+
+34. Especionar container
+> docker container inspect [id_container]
+
+35. Recuperar apenar trecho necessário do inspect acima
+> docker container inspect 5bf -f '{{json $.Mounts}}'
+
+36. Criar volume no momento da criação do container, necessário apenas informa um nome de volume que não existe
+> docker container run -d --name mysql-db -v mysql-db:/var/lib/mysql:ro -e MYSQL_ROOT_PASSWORD=password mysql
+
+37. Remover todos os containers
+- Instrução abaixo faz tipo um subSelect fazendo analogia ao SQL ele apaga uma lista que retornou da segunda pesquisa
+> docker container rm -f $(docker container ls -a -q)
+
+38. Copia arquivos de dentro do docker para o host(máquina local)
+- cp -> copia
+- nginx1 -> nome do container
+- /usr/share/nginx/html/index.html -> caminho dentro do container
+- . caminho host
+>  docker container cp nginx1:/usr/share/nginx/html/index.html .
+
+39. Executa container passando arquivo local para dentro do container [BIND VOLUME]
+-- Comando abaixo funciona no linux
+> docker container run -d --name nginx2 -v $(pwd)/index.html:/usr/share/ngnix/html/index.html -p 82:80 nginx
+-- Comando semelhante no windows -- CMD
+
+-- Comando semelhante no windows -- Powershell
+
+40. Criando banco mysql com docker 
+> docker run -e MYSQL_ROOT_PASSWORD=root --name meu-mysql -d -p 3307:3306 mysql:5.7
+
+-- Container não armazenar dados, para isso a existencia dos volumes.
+
+#### Docker ####
+- Tem a vida curta
+- Os três compontes == CLI -> linha de comando / docker ending -> motor rutime / docker register -> repositório
+- Docker no windows -> usar o [docker volume]
+- Criar uma rede network - > docker network ls
+ > docker network create teste
+ > docker network connect teste [id_container]
+ 
+#### Docker compose ####
+> docker-compose up -f [diretorio_docker-compose] -d
+
+#### LISTAGEM DE COMANDOS GERAIS SEM EXEMPLOS
+
+- Para pesquisa masi comando de determinado command
+> docker image --help
+
+Management Commands:
+  builder     Manage builds
+  config      Manage Docker configs
+  container   Manage containers
+  context     Manage contexts
+  image       Manage images
+  network     Manage networks
+  node        Manage Swarm nodes
+  plugin      Manage plugins
+  secret      Manage Docker secrets
+  service     Manage services
+  stack       Manage Docker stacks
+  swarm       Manage Swarm
+  system      Manage Docker
+  trust       Manage trust on Docker images
+  volume      Manage volumes
+
+Commands:
+  attach      Attach local standard input, output, and error streams to a running container
+  build       Build an image from a Dockerfile
+  commit      Create a new image from a container's changes
+  cp          Copy files/folders between a container and the local filesystem
+  create      Create a new container
+  diff        Inspect changes to files or directories on a container's filesystem
+  events      Get real time events from the server
+  exec        Run a command in a running container
+  export      Export a container's filesystem as a tar archive
+  history     Show the history of an image
+  images      List images
+  import      Import the contents from a tarball to create a filesystem image
+  info        Display system-wide information
+  inspect     Return low-level information on Docker objects
+  kill        Kill one or more running containers
+  load        Load an image from a tar archive or STDIN
+  login       Log in to a Docker registry
+  logout      Log out from a Docker registry
+  logs        Fetch the logs of a container
+  pause       Pause all processes within one or more containers
+  port        List port mappings or a specific mapping for the container
+  ps          List containers
+  pull        Pull an image or a repository from a registry
+  push        Push an image or a repository to a registry
+  rename      Rename a container
+  restart     Restart one or more containers
+  rm          Remove one or more containers
+  rmi         Remove one or more images
+  run         Run a command in a new container
+  save        Save one or more images to a tar archive (streamed to STDOUT by default)
+  search      Search the Docker Hub for images
+  start       Start one or more stopped containers
+  stats       Display a live stream of container(s) resource usage statistics
+  stop        Stop one or more running containers
+  tag         Create a tag TARGET_IMAGE that refers to SOURCE_IMAGE
+  top         Display the running processes of a container
+  unpause     Unpause all processes within one or more containers
+  update      Update configuration of one or more containers
+  version     Show the Docker version information
+  wait        Block until one or more containers stop, then print their exit codes
+
+
+#### Cuidados com os volumes criados, pois os mesmos não são deletados quando o container é excluido e os mesmos ocupam muito espaço no disco
+- usar comando [27]
 
 ### Boas práticas Imagem Docker
 - Imagem oficias
@@ -357,6 +514,40 @@ na tag spec.externalName informo o link externo para acessar e no metadata.name 
 
 > kubectl get enpoints
 
+
+
+#### Namespaces
+
+> kubectl get namespaces
+> kubectl create namespace [nome qualquer]
+
+-- Alteração do comando de aplicar o deployment agora informando o namespace
+> kubectl apply -f [arquivo] -n [namespace]
+-- Para visualizar também muda 
+> kubectl get deployment -n [namespace]
+-- Essa informação também pode ser incluida no arquivo yaml na tag namespace no conjunto metadata [Arquivo de exemplo: deploygreen]
+
+-- Comando para vizualização de todos os pods
+> kubectl get deployments --all-namespaces
+
+##### Comunicação Namespaces
+
+-- Para acessar um service que foi utilizado para subir dois namespaces.
+-- utilizar o nome completo do service.
+-- Estou utilizando uma máquina linux para realização dos testes pois o multipass não está funcionando no windows
+> kubectl run -i --tty --image douglasjava26/ubuntu-machine machine-ubuntu --restart=Never --rm -- /bin/bash
+> curl http://service-nginx-color.blue.svc.cluster.local
+-- Quando preciso trabalhar em outro namespace, preciso informar o namespace completo conforme acima 
+-- nome do service + namespaces + svc + cluster + local
+
+-- Para saber o que poder ser separados em namespaces, executar o seguinte comando, da mesma forma o que não pode altreando para [false]
+> kubectl api-resources --namespaced=true
+
+##### Subindo aplicação
+
+-- Github -> git clone git@github.com:KubeDev/pedelogo-catalogo.git
+
+
 ## Comandos MULTIPASS
 
 1.  Criação de máquinas virtuais  
@@ -509,3 +700,18 @@ Referencias:
  - https://github.com/canonical/multipass/issues/1512  
  - https://github.com/canonical/multipass/issues/990  
  - https://github.com/canonical/multipass/issues/706
+ 
+ 
+ 
+ 
+## Azure na prática
+
+
+Docker - Guia de Referência Gratuito
+✅ - https://bit.ly/docker-guia-gratuito
+
+Kubernetes - Guia de Referência Gratuito
+✅ - https://bit.ly/kubernetes-guia-gratuito
+
+Azure na prática
+✅ - https://medium.com/azure-na-pratica

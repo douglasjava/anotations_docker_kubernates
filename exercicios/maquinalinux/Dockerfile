@@ -6,3 +6,4 @@ RUN curl -LO "https://storage.googleapis.com/kubernetes-release/release/$(curl -
 RUN chmod +x ./kubectl
 RUN sudo mv ./kubectl /usr/local/bin/kubectl
 RUN kubectl version --client
+RUN apt-get update && sudo apt install --yes snapd 

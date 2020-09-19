@@ -1,0 +1,17 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: deploy-ngnix-color
+  namespace: green
+spec:
+  selector:
+    matchLabels:
+      app: ngnix-color
+  template:
+    metadata:
+      labels:
+        app: ngnix-color
+    spec:
+      containers:
+      - name: ngnix-color
+        image: kubedevio/nginx-color:green
